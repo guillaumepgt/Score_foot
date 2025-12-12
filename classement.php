@@ -21,8 +21,7 @@ function getClassement($pdo, $codeCompetition) {
             FROM matches m
             LEFT JOIN teams t_home ON m.home_team = t_home.api_team_id
             LEFT JOIN teams t_away ON m.away_team = t_away.api_team_id
-            WHERE m.competition_id = :comp_id 
-            AND m.status = 'FINISHED'";
+            WHERE m.competition_id = :comp_id";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':comp_id' => $compId]);
