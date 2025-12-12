@@ -1,0 +1,11 @@
+CREATE TABLE matches (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    api_match_id INT NOT NULL UNIQUE,
+    home_team VARCHAR(100),
+    away_team VARCHAR(100),
+    score_home INT DEFAULT NULL,
+    score_away INT DEFAULT NULL,
+    status VARCHAR(50),
+    match_date DATETIME,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
