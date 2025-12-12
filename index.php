@@ -52,9 +52,7 @@ $donnees = [
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<<<<<<< HEAD
     <script src="DB/query.js" defer></script>
-=======
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kickoff</title>
@@ -195,19 +193,15 @@ body {
             margin-top: 50px;
         }
 </style>
->>>>>>> origin/Basile
 </head>
 
 <body>
-<<<<<<< HEAD
-<button onclick="searchTeam(idequipe)">Rechercher l’équipe</button>
 <div id="root"></div>
-=======
 <header>
     <img src="/Frontend/images/kickoff_logo.png" class="logo" width="400" height="200"/>
     <nav class="main-nav">
             <a href="index.php" class="nav-link active">Matchs</a>
-            <a href="classement.html" class="nav-link">Classements</a>
+            <a href="classement.php" class="nav-link">Classements</a>
         </nav>
 </header>
     <hr>
