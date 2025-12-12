@@ -1,9 +1,3 @@
-DROP DATABASE IF EXISTS football_db;
-CREATE DATABASE football_db;
-USE football_db;
-
-DROP TABLE IF EXISTS matches;
-
 CREATE TABLE matches (
     id INT AUTO_INCREMENT PRIMARY KEY,
     api_match_id INT NOT NULL UNIQUE,
@@ -13,5 +7,15 @@ CREATE TABLE matches (
     score_away INT DEFAULT NULL,
     status VARCHAR(50),
     match_date DATETIME,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE teams (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    api_team_id INT NOT NULL UNIQUE,
+    name VARCHAR(100),
+    short_name VARCHAR(50),
+    tla VARCHAR(10),
+    crest_url VARCHAR(255),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

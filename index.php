@@ -8,10 +8,10 @@ require_once __DIR__ . '/DB/db.php';
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<script src="DB/query.js" defer></script>
+    <script src="DB/query.js" defer></script>
 </head>
 <body>
-    <button onclick="searchTeam()">Rechercher l’équipe</button>
-    <div id="root"></div>
+<button onclick="searchTeam(idequipe)">Rechercher l’équipe</button>
+<div id="root"></div>
 </body>
 </html>

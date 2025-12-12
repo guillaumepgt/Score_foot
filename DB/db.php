@@ -4,10 +4,10 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $bdd = array(
-    'host'     => 'localhost',
-    'username' => 'football_user',
-    'password' => 'foot1234',
-    'database' => 'football_db'
+    'host'     => 'lamp_db',
+    'username' => 'irdw',
+    'password' => 'network',
+    'database' => 'mabdd'
 );
 
 $mysqli = new mysqli(

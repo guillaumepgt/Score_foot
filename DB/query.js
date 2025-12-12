@@ -1,5 +1,4 @@
-function searchTeam() {
-	const idEquipe = "Réal Madrid";
+function searchTeam(idEquipe) {
 
     if (!idEquipe) {
         alert("Veuillez sélectionner une équipe");

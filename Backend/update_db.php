@@ -20,25 +20,15 @@ function get_pdo_connection() {
     }
 }
 
-/**
- * Sauvegarde les MATCHS (Scores)
- * Enregistre les IDs des équipes au lieu des noms
- */
-function update_db($data, $table)
+function update_matches_db($data, $compId)
 {
     $pdo = get_pdo_connection();
 
-    // Whitelist des tables autorisées
-    $allowed_tables = ['matches', 'live_scores'];
-    if (!in_array($table, $allowed_tables)) {
-        die("Erreur : Table '$table' non autorisée.");
-    }
-
-    $sql = "INSERT INTO `$table` (api_match_id, home_team, away_team, score_home, score_away, status, match_date) 
-            VALUES (:api_id, :home_id, :away_id, :s_home, :s_away, :status, :m_date)
+    // On ajoute competition_id dans la requête
+    $sql = "INSERT INTO matches (api_match_id, competition_id, home_team, away_team, score_home, score_away, status, match_date) 
+            VALUES (:api_id, :comp_id, :home_id, :away_id, :s_home, :s_away, :status, :m_date)
             ON DUPLICATE KEY UPDATE 
-                home_team  = VALUES(home_team),
-                away_team  = VALUES(away_team),
+                competition_id = VALUES(competition_id), -- Mise à jour de la liaison
                 score_home = VALUES(score_home), 
                 score_away = VALUES(score_away), 
                 status     = VALUES(status),
@@ -57,21 +47,19 @@ function update_db($data, $table)
 
         $stmt->execute([
             ':api_id'   => $match['id'],
-            ':home_id'  => $match['homeTeam']['id'], // On stocke l'ID
-            ':away_id'  => $match['awayTeam']['id'], // On stocke l'ID
-            ':s_home'   => $match['score']['fullTime']['home'] ?? null,
-            ':s_away'   => $match['score']['fullTime']['away'] ?? null,
+            ':comp_id'  => $compId,
+            ':home_id'  => $match['homeTeam']['id'],
+            ':away_id'  => $match['awayTeam']['id'],
+            ':s_home'   => isset($match['score']['fullTime']['home']) ? $match['score']['fullTime']['home'] : null,
+            ':s_away'   => isset($match['score']['fullTime']['away']) ? $match['score']['fullTime']['away'] : null,
             ':status'   => $match['status'],
             ':m_date'   => $formattedDate
         ]);
         $count++;
     }
-    echo "✅ Succès : $count matchs traités dans '$table'.<br>";
+    echo "✅ Succès : $count matchs traités.<br>";
 }
 
-/**
- * Sauvegarde les ÉQUIPES (Noms, Logos, IDs)
- */
 function update_teams_db($data)
 {
     $pdo = get_pdo_connection();
@@ -92,12 +80,36 @@ function update_teams_db($data)
         $stmt->execute([
             ':api_id' => $team['id'],
             ':name'   => $team['name'],
-            ':short'  => $team['shortName'] ?? $team['name'],
-            ':tla'    => $team['tla'] ?? '',
-            ':crest'  => $team['crest'] ?? ''
+            ':short'  => isset($team['shortName']) ? $team['shortName'] : $team['name'],
+            ':tla'    => isset($team['tla']) ? $team['tla'] : '',
+            ':crest'  => isset($team['crest']) ? $team['crest'] : ''
         ]);
         $count++;
     }
     echo "✅ Succès : $count équipes mises à jour dans 'teams'.<br>";
+}
+
+function update_competition_db($compData)
+{
+    $pdo = get_pdo_connection();
+
+    $sql = "INSERT INTO competitions (api_competition_id, code, name, emblem_url, area_name) 
+            VALUES (:api_id, :code, :name, :emblem, :area)
+            ON DUPLICATE KEY UPDATE 
+                name = VALUES(name), 
+                emblem_url = VALUES(emblem_url),
+                updated_at = NOW()";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        ':api_id' => $compData['id'],
+        ':code'   => $compData['code'],
+        ':name'   => $compData['name'],
+        ':emblem' => isset($compData['emblem']) ? $compData['emblem'] : '',
+        ':area'   => isset($compData['area']['name']) ? $compData['area']['name'] : ''
+    ]);
+
+    echo "🏆 Compétition <strong>" . $compData['name'] . "</strong> mise à jour.<br>";
 }
 ?>

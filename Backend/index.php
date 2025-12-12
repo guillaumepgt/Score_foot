@@ -1,45 +1,44 @@
 <?php
-// On inclut le moteur de requête API et les fonctions de sauvegarde
 require("request_foot.php");
 require("update_db.php");
 
-// Liste des compétitions à mettre à jour (FL1 = Ligue 1, FL2 = Ligue 2)
-$competitions = ['FL1'];
+$competitionsCodes = ['FL1', 'PL'];
 
-foreach ($competitions as $code) {
-    echo "<h2>--- Traitement de la compétition : $code ---</h2>";
+foreach ($competitionsCodes as $code) {
+    echo "<hr><h2>--- Traitement : $code ---</h2>";
 
-    // ------------------------------------------------------
-    // ÉTAPE 1 : Récupérer et sauvegarder les ÉQUIPES (Teams)
-    // ------------------------------------------------------
-    echo "Récupération des équipes...<br>";
+    // 1. On récupère les infos de la compétition elle-même
+    // L'URL API : https://api.football-data.org/v4/competitions/FL1
+    $compInfo = request("competitions/$code");
+
+    if (isset($compInfo['id'])) {
+        // Sauvegarde de la compétition
+        update_competition_db($compInfo);
+
+        // On garde l'ID API (ex: 2015) pour le passer aux matchs
+        $apiCompetitionId = $compInfo['id'];
+    } else {
+        echo "❌ Impossible de récupérer les infos de la compétition $code.<br>";
+        continue; // On passe à la suivante
+    }
+
+    // 2. Récupération des Équipes
+    echo "<em>Récupération des équipes...</em><br>";
     $teamResult = request("competitions/$code/teams");
-
     if (isset($teamResult['teams'])) {
-        // On appelle la fonction spécifique aux équipes
         update_teams_db($teamResult['teams']);
-    } else {
-        echo "⚠️ Erreur ou aucune équipe trouvée pour $code.<br>";
     }
 
-    // ------------------------------------------------------
-    // ÉTAPE 2 : Récupérer et sauvegarder les MATCHS (Scores)
-    // ------------------------------------------------------
-    echo "Récupération des matchs...<br>";
+    // 3. Récupération des Matchs
+    echo "<em>Récupération des matchs...</em><br>";
     $matchResult = request("competitions/$code/matches");
-
     if (isset($matchResult['matches'])) {
-        // On appelle la fonction spécifique aux matchs
-        // On précise la table 'matches'
-        update_db($matchResult['matches'], 'matches');
-    } else {
-        echo "⚠️ Erreur ou aucun match trouvé pour $code.<br>";
+        // IMPORTANT : On passe l'ID de la compétition à la fonction
+        update_matches_db($matchResult['matches'], $apiCompetitionId);
     }
 
-    // Petit temps de pause pour éviter de bloquer l'API (Rate Limiting)
-    sleep(1);
-    echo "<hr>";
+    sleep(1); // Pause API
 }
 
-echo "<strong>Mise à jour globale terminée !</strong>";
+echo "<br><strong>Terminé !</strong>";
 ?>
