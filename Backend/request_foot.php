@@ -12,9 +12,8 @@ function request($uri)
     $response = file_get_contents($uri, false, $stream_context);
     $matches = json_decode($response, true);
 
-    if (isset($matches['matches'])) {
-        print_r($matches['matches']);
-        return $matches['matches'];
+    if (isset($matches)) {
+        return $matches;
     } else {
         return "Impossible de récupérer les scores.";
     }

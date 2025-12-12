@@ -12,7 +12,10 @@ CREATE TABLE matches (
 
 CREATE TABLE teams (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    api_teams_key INT NOT NULL UNIQUE,
+    api_team_id INT NOT NULL UNIQUE,
     name VARCHAR(100),
+    short_name VARCHAR(50),
+    tla VARCHAR(10),
+    crest_url VARCHAR(255),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
