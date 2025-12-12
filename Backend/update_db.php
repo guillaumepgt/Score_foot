@@ -1,6 +1,5 @@
 <?php
 
-// Fonction interne pour se connecter à la BDD (évite de répéter le code)
 function get_pdo_connection() {
     $host = 'lamp_db';
     $db   = 'mabdd';
@@ -64,7 +63,6 @@ function update_teams_db($data)
 {
     $pdo = get_pdo_connection();
 
-    // Table 'teams' en dur car la structure est fixe
     $sql = "INSERT INTO teams (api_team_id, name, short_name, tla, crest_url) 
             VALUES (:api_id, :name, :short, :tla, :crest)
             ON DUPLICATE KEY UPDATE 
