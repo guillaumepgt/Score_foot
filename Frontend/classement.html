@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kickoff</title>
+<style>
+body{
+    background-color:rgb(196, 181, 163);
+}
+footer{
+    background-color: rgb(66, 43, 2);
+    font-style:bold;
+    color: antiquewhite;
+}
+
+
+/* C'est ici que la magie opère pour l'alignement */
+header {
+    display: flex; /* Active le mode Flexbox */
+    justify-content: space-between; /* Pousse le logo à gauche et le menu à droite */
+    align-items: center; /* Centre tout verticalement */
+    gap: 40px;
+}
+
+logo {
+
+}
+
+/* --- Style du Menu (Matchs / Classements) --- */
+.main-nav {
+    display: flex;
+    gap: 30px; /* Espace entre "Matchs" et "Classements" */
+}
+
+.nav-link {
+    text-decoration: none; /* Enlève le soulignement moche */
+    color: #000000; /* Texte en noir */
+    font-family: 'Inter', sans-serif; /* Ta police pro */
+    font-weight: 600; /* Texte un peu gras */
+    font-size: 1.1rem; /* Taille du texte */
+    text-transform: uppercase; /* Met en majuscule comme sur ton image */
+    letter-spacing: 1px; /* Espacement léger entre les lettres */
+    transition: opacity 0.3s ease;
+}
+
+/* Effet au survol de la souris */
+.nav-link:hover {
+    opacity: 0.7; /* Le texte devient légèrement transparent */
+}
+
+/* Style pour le lien de la page active */
+.nav-link.active {
+    border-bottom: 2px solid #E65100; /* Une ligne orange sous la page active (style Kickoff) */
+}
+</style>
+</head>
+
+<body>
+<header>
+    <img src="./images/kickoff_logo.png" class="logo" width="400" height="200"/>
+    <nav class="main-nav">
+            <a href="index.php" class="nav-link">Matchs</a>
+            <a href="classement.html" class="nav-link active">Classements</a>
+        </nav>
+
+    <hr>
+</header>
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <footer>
+        <p>&copy; Par Basile, Guillaume et Titouan</p>
+    </footer>
+
+</body>
+</html>
